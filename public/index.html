@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hello, React?!</title>
+    <!--
+         In development, we serve CSS using JS injection, so we don't need to reference
+         the CSS file. However, in production we bundle the CSS file separately and therefore
+         need to include it as usual.
+    -->
+    <!-- <link rel="stylesheet" href="/assets/bundle.css" /> -->
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/javascript" src="http://connect.facebook.net/en_US/sdk.js"></script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1725062444378814',
+          xfbml      : true,
+          version    : 'v2.6'
+        });
+      };
+    
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+         fbAsyncInit();
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script src="/assets/bundle.js"></script>
+  </body>
+</html>
