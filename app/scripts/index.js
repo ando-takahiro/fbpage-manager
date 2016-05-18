@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
-import App from 'scripts/components/app';
+import App from 'scripts/components/App';
 
 // Render the root component (<Routes />) intially, wrapped by the
 // new <AppContainer>
@@ -17,9 +17,9 @@ ReactDOM.render(
 if (module.hot) {
   // Accept any hot reloads affecting `scripts/routes.js` (including
   // any components it requires and renders etc.)
-  module.hot.accept('scripts/components/app', () => {
+  module.hot.accept('scripts/components/App', () => {
     // Re-import the updated component
-    const HotApp = require('scripts/components/app').default;
+    const HotApp = require('scripts/components/App').default;
 
     // Render the updated component (state will be preserved!)
     ReactDOM.render(

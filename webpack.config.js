@@ -104,11 +104,15 @@ if (TARGET === 'start' || !TARGET) {
     module: {
       loaders: [
         {
-          test: /.s?css$/,
+          test: /.css$/,
           // Compile SASS, resolve `import` and `require` in the CSS
           // and inject the result into the DOM.
-          loaders: ['style', 'css?sourceMap', 'sass?sourceMap'],
+          loaders: ['style', 'css?sourceMap'],
           include: STYLES_DIR,
+        },
+        {
+          test: /\.less$/,
+          loader: 'style-loader!css-loader!less-loader'
         },
       ],
     },
@@ -123,7 +127,7 @@ if (TARGET === 'start' || !TARGET) {
           // browser syncing with hot module replacement
           proxy: {
             // Where webpack-dev-server is running
-            target: 'http://localhost:8080',
+            target: `http://localhost:${PORT}`,
             // This lets BrowserSync know that the proxied server
             // is using websockets, so it can adjusts its own usage
             ws: true,
@@ -163,8 +167,8 @@ if (TARGET === 'start' || !TARGET) {
       loaders: [
         {
           // Process SASS -> CSS and then extract into separate file
-          test: /.s?css$/,
-          loader: ExtractPlugin.extract(['css', 'postcss', 'sass']),
+          test: /.css$/,
+          loader: ExtractPlugin.extract(['css', 'postcss']),
           include: STYLES_DIR,
         },
       ],
@@ -212,9 +216,13 @@ if (TARGET === 'start' || !TARGET) {
       loaders: [
         {
           // Still need to process these files, but don't need to use the style-loader
-          test: /.s?css$/,
-          loaders: ['css?sourceMap', 'sass?sourceMap'],
+          test: /.css$/,
+          loaders: ['css?sourceMap'],
           include: STYLES_DIR,
+        },
+        {
+          test: /\.less$/,
+          loader: 'style-loader!css-loader!less-loader'
         },
       ],
     },
@@ -246,8 +254,8 @@ if (TARGET === 'start' || !TARGET) {
       loaders: [
         {
           // Still need to process these files, but don't need to use the style-loader
-          test: /.s?css$/,
-          loaders: ['css?sourceMap', 'sass?sourceMap'],
+          test: /.css$/,
+          loaders: ['css?sourceMap'],
           include: STYLES_DIR,
         },
       ],
