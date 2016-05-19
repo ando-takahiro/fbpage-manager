@@ -6,6 +6,13 @@ import { AppContainer } from 'react-hot-loader';
 
 import App from 'scripts/components/App';
 
+global.FB.init({
+  appId: '1725542020997523',
+  // appId : '1725062444378814',
+  xfbml: true,
+  version: 'v2.6',
+});
+
 // Render the root component (<Routes />) intially, wrapped by the
 // new <AppContainer>
 ReactDOM.render(

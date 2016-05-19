@@ -1,12 +1,16 @@
 import React from 'react';
 import SpinnerWindow from './SpinnerWindow';
 import LoginWindow from './LoginWindow';
+import FBPageManageWindow from './FBPageManageWindow';
+import hasPermissions from '../util/hasPermissions';
 
-const STATE_INIT = 0;
-const STATE_LOGIN_PROMPT = 1;
-const STATE_LOGIN_PROMPT_RETRY = 2;
-const STATE_LOGGING_IN = 3;
-const STATE_ACTIVE = 4;
+const STATE_INIT = Symbol();
+const STATE_LOGIN_PROMPT = Symbol();
+const STATE_LOGIN_PROMPT_RETRY = Symbol();
+const STATE_LOGGING_IN = Symbol();
+const STATE_ACTIVE = Symbol();
+
+const PERMISSIONS = ['publish_pages', 'manage_pages', 'pages_show_list'];
 
 export default class App extends React.Component {
   static propTypes = {
@@ -27,7 +31,7 @@ export default class App extends React.Component {
 
     FB.getLoginStatus((response) => {
       if (response.status === 'connected') {
-        this.setState({ state: STATE_ACTIVE });
+        this.reloginIfNeed();
       } else {
         this.setState({ state: STATE_LOGIN_PROMPT });
       }
@@ -35,18 +39,40 @@ export default class App extends React.Component {
   }
 
   //
-  // event handlers
+  // event handlers(login flow)
   //
+  reloginIfNeed() {
+    this.FB.api(
+      '/me/permissions',
+      'GET',
+      {},
+      (response) => {
+        if (hasPermissions(response, PERMISSIONS)) {
+          // We don't need to login, so call after login function
+          this.afterLogin();
+        } else {
+          // We need to login, so show login window
+          this.setState({ state: STATE_LOGIN_PROMPT });
+        }
+      }
+    );
+  }
+
   loginRequest = () => {
+    this.FB.login(this.loginDone, { scope: PERMISSIONS.join(',') });
     this.setState({ state: STATE_LOGGING_IN });
   }
 
   loginDone = (response) => {
     if (response.authResponse) {
-      this.setState({ state: STATE_ACTIVE });
+      this.afterLogin();
     } else {
       this.setState({ state: STATE_LOGIN_PROMPT_RETRY });
     }
+  }
+
+  afterLogin() {
+    this.setState({ state: STATE_ACTIVE });
   }
 
   //
@@ -58,20 +84,12 @@ export default class App extends React.Component {
         return <SpinnerWindow message="Initializing..." />;
 
       case STATE_LOGIN_PROMPT:
-        return (
-          <LoginWindow
-            fb={this.FB}
-            request={this.loginRequest}
-            done={this.loginDone}
-          />
-        );
+        return <LoginWindow request={this.loginRequest} />;
 
       case STATE_LOGIN_PROMPT_RETRY:
         return (
           <LoginWindow
-            fb={this.FB}
             request={this.loginRequest}
-            done={this.loginDone}
             notification="Login failed. Please retry."
           />
         );
@@ -80,7 +98,7 @@ export default class App extends React.Component {
         return <SpinnerWindow message="Logging in..." />;
 
       case STATE_ACTIVE:
-        return <SpinnerWindow />;
+        return <FBPageManageWindow fb={this.FB} />;
 
       default:
         throw new Error('unexpected state');
