@@ -263,6 +263,10 @@ if (TARGET === 'start' || !TARGET) {
           loaders: ['css?sourceMap'],
           include: STYLES_DIR,
         },
+        {
+          test: /\.less$/,
+          loader: 'style-loader!css-loader!less-loader'
+        },
       ],
     },
     // This is required for Enzyme (http://airbnb.io/enzyme/docs/guides/webpack.html)
