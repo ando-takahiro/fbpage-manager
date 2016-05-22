@@ -4,3 +4,26 @@ html, body, #app, .fill {
   max-width: 100%;
 }
 
+.post-icon {
+  float: left;
+  display: block;
+  margin: 1rem;
+}
+/*
+ * keep aspect ratio but limit
+ * http://www.skychew.com/2014/05/css-image-auto-resize-height-and-width-while-maintaining-aspect-ratio/
+ */
+.post-icon.post-close {max-height:64px;width:auto;}
+.post-icon.post-close {height:auto;max-width:64px;}
+
+.post-message.post-close {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 80%;
+}
+
+.post-message.post-open {
+  white-space: pre-wrap;
+}
+

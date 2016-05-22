@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from 'essence-list';
+import { Block } from 'essence-core';
 import FBPageListBar from './FBPageListBar';
 import FBPostSection from './FBPostSection';
 import FBPost from './FBPost';
@@ -110,13 +110,15 @@ export default class FBPageManageWindow extends React.Component {
       let posts;
       if (this.state.posts.length > 0) {
         posts = (
-          <List type="navigation" classes="e-twolinelist">
-            {
-              this.state.posts.map(
-                (post, index) => <FBPost key={index} post={post} />
-              )
-            }
-          </List>
+          <Block classes="e-row">
+            <Block classes="brick brick-12">
+              {
+                this.state.posts.map(
+                  (post, index) => <FBPost key={index} post={post} />
+                )
+              }
+            </Block>
+          </Block>
         );
       }
 
