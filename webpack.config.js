@@ -8,7 +8,7 @@ const STYLES_DIR = path.join(__dirname, 'app/stylesheets');
 const BUILD_DIR = path.join(__dirname, 'build');
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const TESTS_DIR = path.join(__dirname, 'tests');
-const ASSET_PATH = '/assets/';
+const ASSET_PATH = '/';
 const PORT = 8000;
 
 /**
@@ -175,6 +175,10 @@ if (TARGET === 'start' || !TARGET) {
           test: /.css$/,
           loader: ExtractPlugin.extract(['css', 'postcss']),
           include: STYLES_DIR,
+        },
+        {
+          test: /\.less$/,
+          loader: 'style-loader!css-loader!less-loader'
         },
       ],
     },
