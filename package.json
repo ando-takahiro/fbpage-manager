@@ -44,6 +44,7 @@
     "less-loader": "^2.2.3",
     "mocha": "^2.4.5",
     "mocha-loader": "^0.7.1",
+    "moment": "^2.13.0",
     "postcss-csso": "^1.1.1",
     "postcss-loader": "^0.9.1",
     "react": "^15.0.1",

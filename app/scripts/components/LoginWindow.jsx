@@ -25,7 +25,7 @@ export default function LoginWindow(props) {
           <Block classes="brick brick-12">
             <Btn
               label="Login with Facebook"
-              ripple="false"
+              ripple="true"
               type="primary"
               className="raised"
               onClick={props.request}

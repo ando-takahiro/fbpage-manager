@@ -48,6 +48,11 @@ var config = {
         loaders: ['babel'],
         include: [SCRIPTS_DIR, TESTS_DIR],
       },
+      // Load icons as is
+      {
+        test: /.(eot|svg|ttf|woff)$/,
+        loaders: ['file'],
+      },
     ],
   },
   resolve: {

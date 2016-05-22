@@ -10,7 +10,12 @@ const STATE_LOGIN_PROMPT_RETRY = Symbol();
 const STATE_LOGGING_IN = Symbol();
 const STATE_ACTIVE = Symbol();
 
-const PERMISSIONS = ['publish_pages', 'manage_pages', 'pages_show_list'];
+const PERMISSIONS = [
+  'publish_pages',
+  'manage_pages',
+  'pages_show_list',
+  'read_insights',
+];
 
 export default class App extends React.Component {
   static propTypes = {

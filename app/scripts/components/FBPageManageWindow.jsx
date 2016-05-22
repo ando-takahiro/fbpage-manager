@@ -1,21 +1,139 @@
 import React from 'react';
-import { Divider } from 'essence-core';
-import FBPagePostSection from './FBPagePostSection';
-import FBPageListSection from './FBPageListSection';
+import { List } from 'essence-list';
+import FBPageListBar from './FBPageListBar';
+import FBPostSection from './FBPostSection';
+import FBPost from './FBPost';
 
-export default function FBPageManageWindow(props) {
-  return (
-    <div>
-      <FBPageListSection fb={props.fb} />
-      <Divider classes={'thin e-background-indigo-500'} />
-      <FBPagePostSection fb={props.fb} />
-      <FBPagePostSection fb={props.fb} />
-    </div>
-  );
+const REQUIRE_POST_FIELDS = [
+  'message',
+  'picture',
+  'created_time',
+  'insights',
+  'is_published',
+].join(',');
+
+export default class FBPageManageWindow extends React.Component {
+  static propTypes = {
+    // Required
+    fb: React.PropTypes.object.isRequired,
+  }
+
+  //
+  // initializers
+  //
+
+  constructor(props) {
+    super(props);
+
+    this.FB = props.fb;
+    this.FB.api(
+      '/me/accounts',
+      'GET',
+      {},
+      (response) => {
+        this.setState({ ...this.state, pages: response.data || [] });
+        if (this.state.pages.length > 0) {
+          this.pageSelected(0);
+        }
+      });
+  }
+
+  state = {
+    pages: [],
+    current: 0,
+    posts: [],
+  }
+
+  //
+  // event handlers
+  //
+
+  pageSelected = (index) => {
+    const page = this.state.pages[index];
+    if (!page) {
+      throw new Error('index out of range');
+    }
+
+    this.FB.api(
+      `/${page.id}/promotable_posts`,
+      'GET',
+      {
+        include_hidden: true,
+        fields: REQUIRE_POST_FIELDS,
+      },
+      (response) => {
+        this.setState({
+          ...this.state,
+          current: index,
+          posts: response.data,
+        });
+      }
+    );
+  }
+
+  posted = (post) => {
+    // insert new post on front of existing posts
+    const posts = [
+      {
+        message: post.text,
+        reate_time: String(new Date()),
+        is_published: post.publish,
+        insights: {
+          data: [
+            {
+              name: 'post_impressions',
+              values: [
+                { value: 0 },
+              ],
+            },
+          ],
+        },
+      },
+      ...this.state.posts,
+    ];
+
+    this.setState({
+      ...this.state,
+      posts,
+    });
+  }
+
+  //
+  // render
+  //
+
+  render() {
+    let pageBody;
+    if (this.state.pages.length > 0) {
+      const curPage = this.state.pages[this.state.current];
+
+      let posts;
+      if (this.state.posts.length > 0) {
+        posts = (
+          <List type="navigation" classes="e-twolinelist">
+            {
+              this.state.posts.map(
+                (post, index) => <FBPost key={index} post={post} />
+              )
+            }
+          </List>
+        );
+      }
+
+      pageBody = (
+        <div>
+          <FBPostSection page={curPage} fb={this.FB} posted={this.posted} />
+          {posts}
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <FBPageListBar pages={this.state.pages} current={this.state.current} />
+        {pageBody}
+      </div>
+    );
+  }
 }
-
-FBPageManageWindow.propTypes = {
-  // Required
-  fb: React.PropTypes.object.isRequired,
-};
 
