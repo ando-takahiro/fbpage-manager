@@ -5,7 +5,7 @@ import moment from 'moment';
 import getImpressionValue from '../util/getImpressionValue';
 import getPublishIconName from '../util/getPublishIconName';
 
-export default class FBPost extends React.Component {
+export default class Post extends React.Component {
   static propTypes = {
     // Required
     post: React.PropTypes.object.isRequired,

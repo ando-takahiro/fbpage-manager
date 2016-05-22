@@ -17,7 +17,7 @@ class WorkaroundInput extends Input {
   }
 }
 
-export default class FBPostSection extends React.Component {
+export default class PostComposer extends React.Component {
   static propTypes = {
     // Required
     fb: React.PropTypes.object.isRequired,

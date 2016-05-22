@@ -1,8 +1,8 @@
 import React from 'react';
 import { Block } from 'essence-core';
-import FBPageListBar from './FBPageListBar';
-import FBPostSection from './FBPostSection';
-import FBPost from './FBPost';
+import TitleBar from './TitleBar';
+import PostComposer from './PostComposer';
+import Post from './Post';
 
 const REQUIRE_POST_FIELDS = [
   'message',
@@ -12,7 +12,7 @@ const REQUIRE_POST_FIELDS = [
   'is_published',
 ].join(',');
 
-export default class FBPageManageWindow extends React.Component {
+export default class PageWindow extends React.Component {
   static propTypes = {
     // Required
     fb: React.PropTypes.object.isRequired,
@@ -114,7 +114,7 @@ export default class FBPageManageWindow extends React.Component {
             <Block classes="brick brick-12">
               {
                 this.state.posts.map(
-                  (post, index) => <FBPost key={index} post={post} />
+                  (post, index) => <Post key={index} post={post} />
                 )
               }
             </Block>
@@ -124,7 +124,7 @@ export default class FBPageManageWindow extends React.Component {
 
       pageBody = (
         <div>
-          <FBPostSection page={curPage} fb={this.FB} posted={this.posted} />
+          <PostComposer page={curPage} fb={this.FB} posted={this.posted} />
           {posts}
         </div>
       );
@@ -132,7 +132,7 @@ export default class FBPageManageWindow extends React.Component {
 
     return (
       <div>
-        <FBPageListBar pages={this.state.pages} current={this.state.current} />
+        <TitleBar pages={this.state.pages} current={this.state.current} />
         {pageBody}
       </div>
     );

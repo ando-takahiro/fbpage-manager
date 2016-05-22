@@ -1,7 +1,7 @@
 import React from 'react';
 import SpinnerWindow from './SpinnerWindow';
 import LoginWindow from './LoginWindow';
-import FBPageManageWindow from './FBPageManageWindow';
+import PageWindow from './PageWindow';
 import hasPermissions from '../util/hasPermissions';
 
 const STATE_INIT = Symbol();
@@ -103,7 +103,7 @@ export default class App extends React.Component {
         return <SpinnerWindow message="Logging in..." />;
 
       case STATE_ACTIVE:
-        return <FBPageManageWindow fb={this.FB} />;
+        return <PageWindow fb={this.FB} />;
 
       default:
         throw new Error('unexpected state');

@@ -3,7 +3,7 @@ import { Text } from 'essence-core';
 import AppBar from 'essence-appbar';
 import Menu from 'essence-menu';
 
-export default class FBPageListBar extends React.Component {
+export default class TitleBar extends React.Component {
   static propTypes = {
     // Required
     current: React.PropTypes.number.isRequired,
