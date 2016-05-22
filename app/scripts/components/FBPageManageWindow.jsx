@@ -75,7 +75,7 @@ export default class FBPageManageWindow extends React.Component {
     // insert new post on front of existing posts
     const posts = [
       {
-        message: post.text,
+        message: post.message,
         reate_time: String(new Date()),
         is_published: post.publish,
         insights: {

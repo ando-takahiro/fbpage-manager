@@ -3,6 +3,7 @@ import { Block, Text } from 'essence-core';
 import Icon from 'essence-icon';
 import moment from 'moment';
 import getImpressionValue from '../util/getImpressionValue';
+import getPublishIconName from '../util/getPublishIconName';
 
 export default class FBPost extends React.Component {
   static propTypes = {
@@ -34,10 +35,6 @@ export default class FBPost extends React.Component {
       icon = <Icon name="editor-mode-edit" className={classes} />;
     }
 
-    const rangeIcon = post.is_published ?
-      'social-public' :
-      'notification-vpn-lock';
-
     return (
       <Block classes="e-row">
         <Block classes="brick brick-12" onClick={this.toggleExpand}>
@@ -54,8 +51,8 @@ export default class FBPost extends React.Component {
               {getImpressionValue(post)} view
               <Text classes="e-right">
                 <Icon
-                  name={rangeIcon}
-                  className={"e-text-indigo-500"}
+                  name={getPublishIconName(post.is_published)}
+                  className="e-text-indigo-500"
                 />
                 {moment(post.created_time).fromNow()}
               </Text>
