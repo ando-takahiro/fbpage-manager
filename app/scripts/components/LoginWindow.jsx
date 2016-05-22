@@ -24,6 +24,7 @@ export default function LoginWindow(props) {
         <Block classes="e-row">
           <Block classes="brick brick-12">
             <Btn
+              id="login-button"
               label="Login with Facebook"
               ripple="true"
               type="primary"

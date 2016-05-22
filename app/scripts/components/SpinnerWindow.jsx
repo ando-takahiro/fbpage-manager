@@ -10,7 +10,7 @@ export default function SpinnerWindow(props) {
           {props.message}
         </Block>
         <Block classes="brick brick-12 e-h-center e-margin-top-50">
-          <Progress type="circle" />
+          <Progress id="loading-spinner" type="circle" />
         </Block>
       </Block>
     </Block>

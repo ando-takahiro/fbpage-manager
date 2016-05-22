@@ -110,3 +110,6 @@ export default class App extends React.Component {
     }
   }
 }
+
+// expose for test
+App.REQUIRED_PERMISSIONS = PERMISSIONS;

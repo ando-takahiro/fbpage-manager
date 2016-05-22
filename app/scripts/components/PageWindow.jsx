@@ -131,7 +131,7 @@ export default class PageWindow extends React.Component {
     }
 
     return (
-      <div>
+      <div id="page-window">
         <TitleBar pages={this.state.pages} current={this.state.current} />
         {pageBody}
       </div>
