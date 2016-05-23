@@ -11,7 +11,7 @@ import getPublishIconName from '../util/getPublishIconName';
 class WorkaroundInput extends Input {
   componentWillReceiveProps(nextProps) {
     this.setState({
-      classes: classnames('e-input-group', nextProps.className, nextProps.classes),
+      classes: classnames('e-input-group', nextProps.classes, nextProps.classes),
       inputValue: nextProps.value,
     });
   }
@@ -96,7 +96,7 @@ export default class PostComposer extends React.Component {
           value={this.state.text}
           onChange={this.textChanged}
         />
-        <Block classes="brick brick-12">
+        <Block className="brick brick-12">
           <Btn
             label="Submit"
             ripple="true"

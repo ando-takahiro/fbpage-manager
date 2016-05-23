@@ -4,12 +4,12 @@ import Progress from 'essence-progress';
 
 export default function SpinnerWindow(props) {
   return (
-    <Block classes="e-row fill e-v-center">
-      <Block classes="e-row brick brick-12" >
-        <Block classes="brick brick-12 e-h-center">
+    <Block className="e-row fill e-v-center">
+      <Block className="e-row brick brick-12" >
+        <Block className="brick brick-12 e-h-center">
           {props.message}
         </Block>
-        <Block classes="brick brick-12 e-h-center e-margin-top-50">
+        <Block className="brick brick-12 e-h-center e-margin-top-50">
           <Progress id="loading-spinner" type="circle" />
         </Block>
       </Block>

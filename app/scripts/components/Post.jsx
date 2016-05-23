@@ -28,28 +28,28 @@ export default class Post extends React.Component {
 
     let icon;
     if (post.picture) {
-      const classes = `post-icon ${openStatusClass}`;
-      icon = <img src={post.picture} className={classes} alt="" />;
+      const className = `post-icon ${openStatusClass}`;
+      icon = <img src={post.picture} className={className} alt="" />;
     } else {
-      const classes = `post-icon e-text-indigo-500 e-display-2 ${openStatusClass}`;
-      icon = <Icon name="editor-mode-edit" className={classes} />;
+      const className = `post-icon e-text-indigo-500 e-display-2 ${openStatusClass}`;
+      icon = <Icon name="editor-mode-edit" className={className} />;
     }
 
     return (
-      <Block classes="e-row">
-        <Block classes="brick brick-12" onClick={this.toggleExpand}>
-          <Block classes="e-row">
+      <Block className="e-row">
+        <Block className="brick brick-12" onClick={this.toggleExpand}>
+          <Block className="e-row">
             {icon}
-            <Block classes={`post-message ${openStatusClass}`}>
+            <Block className={`post-message ${openStatusClass}`}>
               {post.message}
             </Block>
           </Block>
         </Block>
-        <Block classes="brick brick-12">
-          <Block classes="e-row">
-            <Block classes="brick brick-12">
+        <Block className="brick brick-12">
+          <Block className="e-row">
+            <Block className="brick brick-12">
               {getImpressionValue(post)} view
-              <Text classes="e-right">
+              <Text className="e-right">
                 <Icon
                   name={getPublishIconName(post.is_published)}
                   className="e-text-indigo-500"

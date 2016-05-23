@@ -127,15 +127,15 @@ export default class PageWindow extends React.Component {
       let posts;
       if (this.state.posts.length > 0) {
         posts = (
-          <Block classes="e-row">
-            <Block classes="brick brick-12">
+          <Block className="e-row">
+            <Block className="brick brick-12">
               {this.state.posts.map((post) => <Post key={post.id} post={post} />)}
             </Block>
           </Block>
         );
       } else {
         posts = (
-          <Block classes="brick brick-12 e-h-center e-margin-top-50">
+          <Block className="brick brick-12 e-h-center e-margin-top-50">
             <Progress id="loading-spinner" type="circle" />
           </Block>
         );

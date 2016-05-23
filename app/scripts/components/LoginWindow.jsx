@@ -7,22 +7,22 @@ export default function LoginWindow(props) {
   let toast;
   if (props.notification) {
     toast = (
-      <Toast classes="e-text-white" visible="false" delay="5000">
+      <Toast className="e-text-white" visible="false" delay="5000">
         {props.notification}
       </Toast>
     );
   }
 
   return (
-    <Block classes="e-row fill e-v-center">
-      <Block classes="brick brick-12">
-        <Block classes="e-row">
-          <Block classes="brick brick-12">
+    <Block className="e-row fill e-v-center">
+      <Block className="brick brick-12">
+        <Block className="e-row">
+          <Block className="brick brick-12">
             <Text>This application needs to be authorized.</Text>
           </Block>
         </Block>
-        <Block classes="e-row">
-          <Block classes="brick brick-12">
+        <Block className="e-row">
+          <Block className="brick brick-12">
             <Btn
               id="login-button"
               label="Login with Facebook"
