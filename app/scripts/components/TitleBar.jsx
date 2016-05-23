@@ -44,7 +44,7 @@ export default class TitleBar extends React.Component {
 
     return (
       <AppBar className="e-background-indigo-500 e-text-white">
-        {/* TODO: page list */}
+        {/* page list */}
         <Menu
           type="cover"
           icon="navigation-menu"
