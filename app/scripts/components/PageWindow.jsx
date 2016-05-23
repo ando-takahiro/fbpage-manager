@@ -93,7 +93,7 @@ export default class PageWindow extends React.Component {
       {
         message: post.message,
         reate_time: String(new Date()),
-        is_published: post.publish,
+        is_published: post.published,
         id: uuid.v4(),
         insights: {
           data: [
