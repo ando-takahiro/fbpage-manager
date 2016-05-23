@@ -4,6 +4,18 @@ html, body, #app, .fill {
   max-width: 100%;
 }
 
+.list-item {
+  display: block;
+  float: none;
+}
+
+/*
+ * workaound to prevent letting menu item float
+ */
+li#pages-menu {
+  float: none !important;
+}
+
 .post-icon {
   float: left;
   display: block;

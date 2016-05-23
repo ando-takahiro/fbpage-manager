@@ -31,9 +31,10 @@ export default class App extends React.Component {
     super(props);
 
     this.FB = props.fb;
-    this.state = {
-      state: STATE_INIT,
-    };
+  }
+
+  state = {
+    state: STATE_INIT,
   }
 
   //

@@ -8,6 +8,7 @@ export default class TitleBar extends React.Component {
     // Required
     current: React.PropTypes.number.isRequired,
     pages: React.PropTypes.array.isRequired,
+    onPageChanged: React.PropTypes.func.isRequired,
     onLogoutRequest: React.PropTypes.func.isRequired,
   }
 
@@ -34,8 +35,10 @@ export default class TitleBar extends React.Component {
 
   render() {
     const pages = this.state.pages.map((page, index) => (
-      <Text className={'e-text-black'} key={index}>
-        {page.name}
+      <Text className="e-text-black list-item" key={page.id}>
+        <Text onClick={() => this.props.onPageChanged(index)}>
+          {page.name}
+        </Text>
       </Text>
     ));
 
@@ -55,10 +58,15 @@ export default class TitleBar extends React.Component {
         <Text>{this.currentPageName()}</Text>
 
         {/* settings */}
-        <Block className={'e-right'}>
-          <Menu type={'cover'} icon={'action-settings'} className={'e-right'}>
-            <Text className={'e-text-black'}>
-              <Text type={'a'} onClick={this.props.onLogoutRequest}>Logout</Text>
+        <Block className="e-right">
+          <Menu
+            id="pages-menu"
+            type="cover"
+            icon="action-settings"
+            className="e-right"
+          >
+            <Text className="e-text-black">
+              <Text onClick={this.props.onLogoutRequest}>Logout</Text>
             </Text>
           </Menu>
         </Block>

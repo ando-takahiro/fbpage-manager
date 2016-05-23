@@ -1,5 +1,7 @@
 import React from 'react';
 import { Block } from 'essence-core';
+import Progress from 'essence-progress';
+import uuid from 'uuid';
 import TitleBar from './TitleBar';
 import PostComposer from './PostComposer';
 import Post from './Post';
@@ -42,7 +44,7 @@ export default class PageWindow extends React.Component {
 
   state = {
     pages: [],
-    current: 0,
+    current: null, // null or index
     posts: [],
   }
 
@@ -51,26 +53,38 @@ export default class PageWindow extends React.Component {
   //
 
   pageSelected = (index) => {
+    if (index === this.state.current) {
+      // just ignore if index equals to this.sate.current
+      return;
+    }
+
     const page = this.state.pages[index];
     if (!page) {
       throw new Error('index out of range');
     }
 
-    this.FB.api(
-      `/${page.id}/promotable_posts`,
-      'GET',
-      {
-        include_hidden: true,
-        fields: REQUIRED_POST_FIELDS,
-      },
-      (response) => {
-        this.setState({
-          ...this.state,
-          current: index,
-          posts: response.data,
-        });
-      }
-    );
+    const emptyPostState = {
+      ...this.state,
+      current: index,
+      posts: [],
+    };
+
+    this.setState(emptyPostState, () => {
+      this.FB.api(
+        `/${page.id}/promotable_posts`,
+        'GET',
+        {
+          include_hidden: true,
+          fields: REQUIRED_POST_FIELDS,
+        },
+        (response) => {
+          this.setState({
+            ...this.state,
+            posts: response.data,
+          });
+        }
+      );
+    });
   }
 
   posted = (post) => {
@@ -80,6 +94,7 @@ export default class PageWindow extends React.Component {
         message: post.message,
         reate_time: String(new Date()),
         is_published: post.publish,
+        id: uuid.v4(),
         insights: {
           data: [
             {
@@ -106,7 +121,7 @@ export default class PageWindow extends React.Component {
 
   render() {
     let pageBody;
-    if (this.state.pages.length > 0) {
+    if (this.state.pages.length > 0 && this.state.current !== null) {
       const curPage = this.state.pages[this.state.current];
 
       let posts;
@@ -114,18 +129,26 @@ export default class PageWindow extends React.Component {
         posts = (
           <Block classes="e-row">
             <Block classes="brick brick-12">
-              {
-                this.state.posts.map(
-                  (post, index) => <Post key={index} post={post} />
-                )
-              }
+              {this.state.posts.map((post) => <Post key={post.id} post={post} />)}
             </Block>
+          </Block>
+        );
+      } else {
+        posts = (
+          <Block classes="brick brick-12 e-h-center e-margin-top-50">
+            <Progress id="loading-spinner" type="circle" />
           </Block>
         );
       }
 
       pageBody = (
         <div>
+          <TitleBar
+            pages={this.state.pages}
+            current={this.state.current}
+            onPageChanged={this.pageSelected}
+            onLogoutRequest={this.props.onLogoutRequest}
+          />
           <PostComposer page={curPage} fb={this.FB} posted={this.posted} />
           {posts}
         </div>
@@ -134,11 +157,6 @@ export default class PageWindow extends React.Component {
 
     return (
       <div id="page-window">
-        <TitleBar
-          pages={this.state.pages}
-          current={this.state.current}
-          onLogoutRequest={this.props.onLogoutRequest}
-        />
         {pageBody}
       </div>
     );

@@ -58,6 +58,7 @@
     "superstatic": "^4.0.2",
     "uglify-js": "^2.6.2",
     "url-loader": "^0.5.7",
+    "uuid": "^2.0.2",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "webpack-merge": "^0.12.0"
