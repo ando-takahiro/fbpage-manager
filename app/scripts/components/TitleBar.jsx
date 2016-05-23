@@ -46,10 +46,9 @@ export default class TitleBar extends React.Component {
       <AppBar className="e-background-indigo-500 e-text-white">
         {/* TODO: page list */}
         <Menu
-          id="pages-menu"
           type="cover"
           icon="navigation-menu"
-          className="e-left"
+          className="e-left pages-menu"
         >
           {pages}
         </Menu>
@@ -60,10 +59,9 @@ export default class TitleBar extends React.Component {
         {/* settings */}
         <Block className="e-right">
           <Menu
-            id="pages-menu"
             type="cover"
             icon="action-settings"
-            className="e-right"
+            className="e-right pages-menu"
           >
             <Text className="e-text-black">
               <Text onClick={this.props.onLogoutRequest}>Logout</Text>

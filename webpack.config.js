@@ -249,12 +249,12 @@ if (TARGET === 'start' || !TARGET) {
     // Add test entry file and inline reloading code
     entry: [
       `mocha!${TESTS_DIR}/entry.js`,
-      'webpack-dev-server/client?http://localhost:8000',
+      'webpack-dev-server/client?http://localhost:8001',
     ],
     devServer: {
       // Use a different port than the main dev server so we can
       // run both at the same time
-      port: 8000,
+      port: 8001,
     },
     output: {
       filename: 'browser_tests.js',

@@ -12,7 +12,7 @@ html, body, #app, .fill {
 /*
  * workaound to prevent letting menu item float
  */
-li#pages-menu {
+li.pages-menu {
   float: none !important;
 }
 
