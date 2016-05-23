@@ -3,9 +3,9 @@ Features
 ====
 
 - FB login, logout
-- browse multiple pages
-- create new post(published/unpublished)
-- browse posts in each pages
+- Browse multiple pages
+- Create new post(published/unpublished)
+- Browse posts in each pages
 
 Components
 ====
@@ -21,7 +21,7 @@ Development Environment
    - [babel](https://github.com/babel/babel)
    - [webpack](https://github.com/webpack/webpack)
    - [node.js](https://github.com/nodejs/node)
-     - [I am in author list :smile:](https://github.com/nodejs/node/blob/c161849bfa6eba42fcc7c09d06d47eaebf37f2e3/AUTHORS#L325)
+     - [I am in the author list :smile:](https://github.com/nodejs/node/blob/c161849bfa6eba42fcc7c09d06d47eaebf37f2e3/AUTHORS#L325)
  - Test
    - [mocha](https://github.com/mochajs/mocha), testing framework
    - [enzyme](https://github.com/airbnb/enzyme), mock library for react.js
@@ -80,7 +80,7 @@ There are 2 types of tests in `tests/` directory.
 
 - unit test: test for utility functions using mocha and sinon
 - integration test: test for components using mocha, enzyme and sinon
-    - make sure login, logout flow
+  - make sure login, logout flow
 
 Usage
 ====
