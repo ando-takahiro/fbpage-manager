@@ -15,7 +15,7 @@ export default class Post extends React.Component {
     open: false,
   }
 
-  toggleExpand = () => {
+  onPostClicked = () => {
     this.setState({
       ...this.state,
       open: !this.state.open,
@@ -37,7 +37,7 @@ export default class Post extends React.Component {
 
     return (
       <Block className="e-row">
-        <Block className="brick brick-12" onClick={this.toggleExpand}>
+        <Block className="brick brick-12" onClick={this.onPostClicked}>
           <Block className="e-row">
             {icon}
             <Block className={`post-message ${openStatusClass}`}>

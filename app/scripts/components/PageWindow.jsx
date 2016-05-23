@@ -36,7 +36,7 @@ export default class PageWindow extends React.Component {
       (response) => {
         this.setState({ ...this.state, pages: response.data || [] });
         if (this.state.pages.length > 0) {
-          this.pageSelected(0);
+          this.onPageSelected(0);
         }
       }
     );
@@ -52,7 +52,7 @@ export default class PageWindow extends React.Component {
   // event handlers
   //
 
-  pageSelected = (index) => {
+  onPageSelected = (index) => {
     if (index === this.state.current) {
       // just ignore if index equals to this.sate.current
       return;
@@ -87,7 +87,7 @@ export default class PageWindow extends React.Component {
     });
   }
 
-  posted = (post) => {
+  onDidPost = (post) => {
     // insert new post on front of existing posts
     const posts = [
       {
@@ -146,10 +146,10 @@ export default class PageWindow extends React.Component {
           <TitleBar
             pages={this.state.pages}
             current={this.state.current}
-            onPageChanged={this.pageSelected}
+            onPageChanged={this.onPageSelected}
             onLogoutRequest={this.props.onLogoutRequest}
           />
-          <PostComposer page={curPage} fb={this.FB} posted={this.posted} />
+          <PostComposer page={curPage} fb={this.FB} onDidPost={this.onDidPost} />
           {posts}
         </div>
       );

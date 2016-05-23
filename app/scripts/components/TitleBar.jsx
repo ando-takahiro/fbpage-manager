@@ -28,7 +28,7 @@ export default class TitleBar extends React.Component {
     });
   }
 
-  currentPageName() {
+  getCurrentPageName() {
     const cur = this.state.pages[this.state.current];
     return cur ? cur.name : undefined;
   }
@@ -55,7 +55,7 @@ export default class TitleBar extends React.Component {
         </Menu>
 
         {/* current page name */}
-        <Text>{this.currentPageName()}</Text>
+        <Text>{this.getCurrentPageName()}</Text>
 
         {/* settings */}
         <Block className="e-right">

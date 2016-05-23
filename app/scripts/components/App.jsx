@@ -43,6 +43,7 @@ export default class App extends React.Component {
   componentWillMount() {
     this.FB.getLoginStatus(this.onDidGetLoginStatus);
   }
+
   onDidGetLoginStatus = (response) => {
     if (response.status === 'connected') {
       this.FB.api(

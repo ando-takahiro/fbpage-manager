@@ -18,7 +18,7 @@ export default function LoginWindow(props) {
       <Block className="brick brick-12">
         <Block className="e-row">
           <Block className="brick brick-12">
-            <Text>This application needs to be authorized.</Text>
+            <Text>Page Manager</Text>
           </Block>
         </Block>
         <Block className="e-row">

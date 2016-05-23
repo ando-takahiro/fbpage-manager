@@ -25,7 +25,7 @@ export default class PostComposer extends React.Component {
     // Required
     fb: React.PropTypes.object.isRequired,
     page: React.PropTypes.object.isRequired,
-    posted: React.PropTypes.func.isRequired,
+    onDidPost: React.PropTypes.func.isRequired,
   }
 
   //
@@ -37,7 +37,7 @@ export default class PostComposer extends React.Component {
 
     this.FB = props.fb;
     this.page = props.page;
-    this.posted = props.posted;
+    this.onDidPost = props.onDidPost;
   }
 
   state = {
@@ -50,10 +50,10 @@ export default class PostComposer extends React.Component {
   // event handlers
   //
 
-  textChanged = (event) =>
+  onTextChanged = (event) =>
     this.setState({ ...this.state, text: event.target.value })
 
-  publishToggled = () =>
+  onPublishClicked = () =>
     this.setState({ ...this.state, publish: !this.state.publish })
 
   submit = () => {
@@ -72,10 +72,10 @@ export default class PostComposer extends React.Component {
         access_token: this.page.access_token,
       },
       (response) => {
+        this.setState({ ...this.state, text: '', posting: false });
         if (!response.error) {
           // clear text and unset posting flag
-          this.setState({ ...this.state, text: '', posting: false });
-          this.posted(post);
+          this.onDidPost(post);
         } else {
           console.error(response.error);
         }
@@ -97,7 +97,7 @@ export default class PostComposer extends React.Component {
           rows={5}
           placeholder="Edit Post Content"
           value={this.state.text}
-          onChange={this.textChanged}
+          onChange={this.onTextChanged}
         />
         <Block className="brick brick-12">
           <Btn
@@ -116,7 +116,7 @@ export default class PostComposer extends React.Component {
             type="checkbox"
             text="Publish"
             name="switch-uncheckbox"
-            onChange={this.publishToggled}
+            onChange={this.onPublishClicked}
           />
         </Block>
       </div>
