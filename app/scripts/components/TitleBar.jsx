@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'essence-core';
+import { Block, Text } from 'essence-core';
 import AppBar from 'essence-appbar';
 import Menu from 'essence-menu';
 
@@ -8,6 +8,7 @@ export default class TitleBar extends React.Component {
     // Required
     current: React.PropTypes.number.isRequired,
     pages: React.PropTypes.array.isRequired,
+    onLogoutRequest: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -40,6 +41,7 @@ export default class TitleBar extends React.Component {
 
     return (
       <AppBar className="e-background-indigo-500 e-text-white">
+        {/* TODO: page list */}
         <Menu
           id="pages-menu"
           type="cover"
@@ -48,7 +50,18 @@ export default class TitleBar extends React.Component {
         >
           {pages}
         </Menu>
+
+        {/* current page name */}
         <Text>{this.currentPageName()}</Text>
+
+        {/* settings */}
+        <Block className={'e-right'}>
+          <Menu type={'cover'} icon={'action-settings'} className={'e-right'}>
+            <Text className={'e-text-black'}>
+              <Text type={'a'} onClick={this.props.onLogoutRequest}>Logout</Text>
+            </Text>
+          </Menu>
+        </Block>
       </AppBar>
     );
   }

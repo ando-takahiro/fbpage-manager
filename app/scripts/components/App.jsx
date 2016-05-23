@@ -9,6 +9,7 @@ const STATE_LOGIN_PROMPT = Symbol();
 const STATE_LOGIN_PROMPT_RETRY = Symbol();
 const STATE_LOGGING_IN = Symbol();
 const STATE_ACTIVE = Symbol();
+const STATE_LOGGING_OUT = Symbol();
 
 const PERMISSIONS = [
   'publish_pages',
@@ -29,55 +30,59 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    const FB = this.FB = props.fb;
+    this.FB = props.fb;
     this.state = {
       state: STATE_INIT,
     };
-
-    FB.getLoginStatus((response) => {
-      if (response.status === 'connected') {
-        this.reloginIfNeed();
-      } else {
-        this.setState({ state: STATE_LOGIN_PROMPT });
-      }
-    });
   }
 
   //
   // event handlers(login flow)
   //
-  reloginIfNeed() {
-    this.FB.api(
-      '/me/permissions',
-      'GET',
-      {},
-      (response) => {
-        if (hasPermissions(response, PERMISSIONS)) {
-          // We don't need to login, so call after login function
-          this.afterLogin();
-        } else {
-          // We need to login, so show login window
-          this.setState({ state: STATE_LOGIN_PROMPT });
+  componentWillMount() {
+    this.FB.getLoginStatus(this.onDidGetLoginStatus);
+  }
+  onDidGetLoginStatus = (response) => {
+    if (response.status === 'connected') {
+      this.FB.api(
+        '/me/permissions',
+        'GET',
+        {},
+        (resp) => {
+          if (hasPermissions(resp, PERMISSIONS)) {
+            // We don't need to login, so call after login function
+            this.setState({ state: STATE_ACTIVE });
+          } else {
+            // We need to login, so show login window
+            this.setState({ state: STATE_LOGIN_PROMPT });
+          }
         }
-      }
-    );
+      );
+    } else {
+      this.setState({ state: STATE_LOGIN_PROMPT });
+    }
   }
 
-  loginRequest = () => {
-    this.FB.login(this.loginDone, { scope: PERMISSIONS.join(',') });
+  onLoginRequest = () => {
+    this.FB.login(this.onDidLogin, { scope: PERMISSIONS.join(',') });
     this.setState({ state: STATE_LOGGING_IN });
   }
 
-  loginDone = (response) => {
+  onDidLogin = (response) => {
     if (response.authResponse) {
-      this.afterLogin();
+      this.setState({ state: STATE_ACTIVE });
     } else {
       this.setState({ state: STATE_LOGIN_PROMPT_RETRY });
     }
   }
 
-  afterLogin() {
-    this.setState({ state: STATE_ACTIVE });
+  onLogoutRequest = () => {
+    this.FB.logout(this.onDidLogout);
+    this.setState({ state: STATE_LOGGING_OUT });
+  }
+
+  onDidLogout = () => {
+    this.setState({ state: STATE_LOGIN_PROMPT });
   }
 
   //
@@ -89,7 +94,7 @@ export default class App extends React.Component {
         return <SpinnerWindow message="Initializing..." />;
 
       case STATE_LOGIN_PROMPT:
-        return <LoginWindow request={this.loginRequest} />;
+        return <LoginWindow request={this.onLoginRequest} />;
 
       case STATE_LOGIN_PROMPT_RETRY:
         return (
@@ -102,8 +107,11 @@ export default class App extends React.Component {
       case STATE_LOGGING_IN:
         return <SpinnerWindow message="Logging in..." />;
 
+      case STATE_LOGGING_OUT:
+        return <SpinnerWindow message="Logging out..." />;
+
       case STATE_ACTIVE:
-        return <PageWindow fb={this.FB} />;
+        return <PageWindow fb={this.FB} onLogoutRequest={this.onLogoutRequest} />;
 
       default:
         throw new Error('unexpected state');

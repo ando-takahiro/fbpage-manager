@@ -14,34 +14,43 @@ describe('login flow', () => {
     }),
   };
 
-  function waitBoot(FB, app, done) {
-      (new Promise((next) => {
-        function check() {
-          let loginButton = app.find({id: 'login-button'});
-          if (loginButton.length > 0) {
-            assert(FB.getLoginStatus.calledOnce);
-            assert(!FB.login.called);
-            loginButton.simulate('click');
-            next();
-          } else {
-            nextTick(check);
-          }
-        };
-        nextTick(check);
-      })).then((next) => {
-        function check() {
-          if (app.find({id: 'page-window'}).length > 0) {
-            // Everything went well,
-            // then PageWindow showed up
-            assert(FB.getLoginStatus.calledOnce);
-            assert(FB.login.calledOnce);
-            assert(FB.api.callCount > 1);
-            done();
-          } else {
-            nextTick(check);
-          }
+  function waitLoginWindow(FB, app) {
+    const orgLoginCount = FB.login.callCount;
+
+    return new Promise((next) => {
+      function check() {
+        let loginButton = app.find({id: 'login-button'});
+        if (loginButton.length > 0) {
+          assert(FB.getLoginStatus.calledOnce);
+          assert.equal(FB.login.callCount, orgLoginCount);
+          loginButton.simulate('click');
+          next();
+        } else {
+          nextTick(check);
         }
-        nextTick(check);
+      };
+      nextTick(check);
+    });
+  }
+
+  function waitBoot(FB, app) {
+    return waitLoginWindow(FB, app)
+      .then(() => {
+        return new Promise((next) => {
+          function check() {
+            if (app.find({id: 'page-window'}).length > 0) {
+              // Everything went well,
+              // then PageWindow showed up
+              assert(FB.getLoginStatus.calledOnce);
+              assert(FB.login.calledOnce);
+              assert(FB.api.callCount > 1);
+              next();
+            } else {
+              nextTick(check);
+            }
+          }
+          nextTick(check);
+        });
       });
   }
 
@@ -81,7 +90,39 @@ describe('login flow', () => {
       const app = mount(<App fb={FB} />);
 
       // make sure login screen shows up, then this app transits to PageWindow
-      waitBoot(FB, app, done);
+      waitBoot(FB, app).then(done).catch(done);
+    });
+
+    it('shows PageWindow after login even if no connection on boot', (done) => {
+      const FB = {
+        getLoginStatus: sinon.stub().callsArgWithAsync(0, { status: 'no' }),
+        api: sinon.stub().callsArgWithAsync(3, EXPECTED_PERMISSION_RESPONSE),
+        login: sinon.stub().callsArgWithAsync(0, { authResponse: {} }),
+      };
+      const app = mount(<App fb={FB} />);
+
+      // make sure login screen shows up, then this app transits to PageWindow
+      waitBoot(FB, app).then(done).catch(done);
+    });
+
+    it('shows LoginWindow again after logout', (done) => {
+      const FB = {
+        getLoginStatus: sinon.stub().callsArgWithAsync(0, { status: 'no' }),
+        api: sinon.stub().callsArgWithAsync(3, EXPECTED_PERMISSION_RESPONSE),
+        login: sinon.stub().callsArgWithAsync(0, { authResponse: {} }),
+        logout: sinon.stub().callsArgAsync(0),
+      };
+      const app = mount(<App fb={FB} />);
+
+      // make sure login screen shows up, then this app transits to PageWindow
+      waitBoot(FB, app)
+        .then(() => {
+          // emit onLogoutRequest forcibly
+          app.node.onLogoutRequest();
+          return waitLoginWindow(FB, app);
+        })
+        .then(done)
+        .catch(done);
     });
   });
 
@@ -98,7 +139,7 @@ describe('login flow', () => {
       const app = mount(<App fb={FB} />);
 
       // make sure login screen shows up, then this app transits to PageWindow
-      waitBoot(FB, app, done);
+      waitBoot(FB, app).then(done).catch(done);
     });
   });
 });

@@ -4,7 +4,7 @@ import TitleBar from './TitleBar';
 import PostComposer from './PostComposer';
 import Post from './Post';
 
-const REQUIRE_POST_FIELDS = [
+const REQUIRED_POST_FIELDS = [
   'message',
   'picture',
   'created_time',
@@ -16,6 +16,7 @@ export default class PageWindow extends React.Component {
   static propTypes = {
     // Required
     fb: React.PropTypes.object.isRequired,
+    onLogoutRequest: React.PropTypes.func.isRequired,
   }
 
   //
@@ -35,7 +36,8 @@ export default class PageWindow extends React.Component {
         if (this.state.pages.length > 0) {
           this.pageSelected(0);
         }
-      });
+      }
+    );
   }
 
   state = {
@@ -59,7 +61,7 @@ export default class PageWindow extends React.Component {
       'GET',
       {
         include_hidden: true,
-        fields: REQUIRE_POST_FIELDS,
+        fields: REQUIRED_POST_FIELDS,
       },
       (response) => {
         this.setState({
@@ -132,7 +134,11 @@ export default class PageWindow extends React.Component {
 
     return (
       <div id="page-window">
-        <TitleBar pages={this.state.pages} current={this.state.current} />
+        <TitleBar
+          pages={this.state.pages}
+          current={this.state.current}
+          onLogoutRequest={this.props.onLogoutRequest}
+        />
         {pageBody}
       </div>
     );
