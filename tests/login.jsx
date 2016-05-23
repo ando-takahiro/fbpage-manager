@@ -86,7 +86,7 @@ describe('login flow', () => {
   });
 
   describe('with broken FB', () => {
-    it('tries to login again when permissions are not enough even though connected', (done) => {
+    it('tries to login again when permissions are not enough even though preconnected', (done) => {
       const FB = {
         // there is a connection before boot
         getLoginStatus: sinon.stub().callsArgWithAsync(0, { status: 'connected' }),
