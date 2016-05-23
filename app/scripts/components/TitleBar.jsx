@@ -74,4 +74,3 @@ export default class TitleBar extends React.Component {
     );
   }
 }
-

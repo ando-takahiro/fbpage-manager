@@ -8,6 +8,9 @@ import Switch from 'essence-switch';
 import classnames from 'classnames';
 import getPublishIconName from '../util/getPublishIconName';
 
+// Essence's Input has a bug that does not relay value property to state.inputValue.
+// If we set value attribute to <Input> tag, that does not cause any changes.
+// This class is a workaround for it.
 class WorkaroundInput extends Input {
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -120,4 +123,3 @@ export default class PostComposer extends React.Component {
     );
   }
 }
-
